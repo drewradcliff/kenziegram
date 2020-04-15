@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
   const path = "./public/uploads";
   fs.readdir(path, (err, items) => {
     const images = items.map((image) => {
-      return `<img style="height:50px" src="./uploads/${image}" />`;
+      return `<img style="height:100px" src="./uploads/${image}" />`;
     });
     res.send(`
       <h1>Welcome to Kenziegram!</h1>
@@ -45,7 +45,10 @@ app.post("/upload", upload.single("myFile"), function (
   next
 ) {
   uploaded_files.push(request.file.filename);
-  response.redirect("/");
+  response.send(`
+    <h1>Uploaded file!</h1>
+    <a href="/">Back Home</a>
+  `);
 });
 
 app.use(express.static("./public"));
