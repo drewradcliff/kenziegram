@@ -1,0 +1,14 @@
+html
+  head
+    title= title
+  body
+    h1 Welcome to Kenziegram!
+    each image in items
+      img(style="height:100px" src="./uploads/" + image)
+    form(
+      action="/upload" 
+      method="POST" 
+      enctype="multipart/form-data"
+    )
+      input(type="file" name="myFile")
+      button(type="submit") Submit
