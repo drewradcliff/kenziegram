@@ -18,6 +18,7 @@ const app = express();
 const port = 3000;
 const uploaded_files = [];
 
+app.use(express.json());
 app.set("view engine", "pug");
 
 app.get("/", (req, res) => {
@@ -27,9 +28,21 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/upload", upload.single("myFile"), function (req, res) {
+app.post("/upload", upload.single("myFile"), (req, res) => {
   uploaded_files.push(req.file.filename);
   res.render("fileUploaded");
+});
+
+// app.get("/poll", (req, res) => {
+//   res.send({ image: "This is an example image" });
+// });
+
+app.post("/latest", (req, res) => {
+  res.json(req.body);
+  // const modified = fs.statSync(imagePath).mtimeMs;
+  // if (modified > after) {
+  // }
+  // res.send()
 });
 
 app.use(express.static("./public"));
