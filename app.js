@@ -16,16 +16,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 const app = express();
 const port = 3000;
-const uploaded_files = [];
+const path = "./public/uploads";
+
+let uploaded_files = [];
+fs.readdir(path, (err, items) => (uploaded_files = items));
 
 app.use(express.json());
 app.set("view engine", "pug");
 
 app.get("/", (req, res) => {
-  const path = "./public/uploads";
-  fs.readdir(path, (err, items) => {
-    res.render("index", { title: "Kenziegram", items });
-  });
+  res.render("index", { title: "Kenziegram", uploaded_files });
 });
 
 app.post("/upload", upload.single("myFile"), (req, res) => {
@@ -38,11 +38,18 @@ app.post("/upload", upload.single("myFile"), (req, res) => {
 // });
 
 app.post("/latest", (req, res) => {
-  res.json(req.body);
-  // const modified = fs.statSync(imagePath).mtimeMs;
-  // if (modified > after) {
-  // }
-  // res.send()
+  let after = req.body.after;
+  const latestImages = [];
+  let timestamp = 0;
+
+  uploaded_files.forEach((image) => {
+    const { mtimeMs } = fs.statSync(path + "/" + image);
+    if (mtimeMs > after) {
+      timestamp = mtimeMs > timestamp ? mtimeMs : timestamp;
+      latestImages.push(image);
+    }
+  });
+  res.send({ images: latestImages, timestamp: timestamp });
 });
 
 app.use(express.static("./public"));

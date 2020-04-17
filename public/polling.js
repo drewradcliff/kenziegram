@@ -10,11 +10,6 @@ async function getLatest(url = "", data = {}) {
 }
 
 setInterval(() => {
-  //   fetch("/poll")
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data));
-  // }
-
   getLatest("/latest", { after: 1523972111977 }).then((data) => {
     console.log(data);
   });
