@@ -1,4 +1,4 @@
-# Kenziegram (part 2)
+# Kenziegram (part 3)
 
 Building an "instagram clone" with express server
 
